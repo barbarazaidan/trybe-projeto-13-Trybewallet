@@ -4,6 +4,6 @@ import walletReduce from './wallet';
 
 const rootReducer = combineReducers({ user: userReduce, wallet: walletReduce });
 
-console.log(rootReducer);
+// console.log(rootReducer);
 
 export default rootReducer;
