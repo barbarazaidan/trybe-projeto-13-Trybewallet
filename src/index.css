@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.formulario {
+  display: flex;
+}
+
+.labelInputSelect {
+  display: flex;
+  margin: 5px;
+}

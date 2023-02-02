@@ -20,7 +20,7 @@ class Login extends React.Component {
 
   validationInput = () => {
     const { email, senha } = this.state;
-    console.log(email);
+    // console.log(email);
     const validEmail = /\S+@+\w+\.+[c]+[o]+[m]/;
     const minCaracter = 6;
     // \S: qualquer caracter que não é espaço em branco; +: adiciona uma nova análise à expressão anterior; \@: o @; \w: qualquer caracter de a ate z, de 0 até 9 e também _; \.: o ponto; [c]+ : a letra "c" e assim por diante
