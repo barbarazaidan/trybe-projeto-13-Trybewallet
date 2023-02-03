@@ -1,10 +1,9 @@
 // import {
-//   ADD_CURRENCIES_WALLET, ADD_EDITOR_WALLET, ADD_EXPENSE_WALLET, ADD_ISTOEDIT_WALLET,
+//   ADD_EDITOR_WALLET, ADD_ISTOEDIT_WALLET,
 // } from '../actions';
 
-import {
-  ADD_CURRENCIES_WALLET,
-} from '../actions';
+import { ADD_CURRENCIES_WALLET } from '../actions/addCurrencies';
+import { ADD_EXPENSE_WALLET } from '../actions/addExpenses';
 
 const INNICIAL_STATE = {
   currencies: [], // array de string
@@ -18,8 +17,15 @@ const walletReducer = (state = INNICIAL_STATE, action) => {
   case ADD_CURRENCIES_WALLET:
     return {
       ...state,
-      currencies: (action.payload).filter((moeda) => moeda !== 'USDT'),
-    }; // excluo do array a string USDT
+      currencies: Object.keys(action.payload).filter((moeda) => moeda !== 'USDT'),
+    };
+    // action.payload é um objeto, mas quero pegar apenas as chaves e ter um array, então uso o método Object.key(), em seguida excluo do array a string USDT
+  case ADD_EXPENSE_WALLET:
+    return {
+      ...state,
+      expenses: [...state.expenses, action.payload],
+      // faço o spred no array antigo da chave expenses e acrescento o novo objeto vindo da action
+    };
   default:
     return state;
   }

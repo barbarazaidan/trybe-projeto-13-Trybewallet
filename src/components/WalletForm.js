@@ -1,75 +1,164 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCurrency } from '../redux/actions';
+import { fetchExchangeRates } from '../redux/actions/addExpenses';
+import { fetchCurrency } from '../redux/actions/addCurrencies';
 
 class WalletForm extends Component {
-  componentDidMount() {
+  state = {
+    id: 0,
+    value: '',
+    currency: '',
+    method: 'Dinheiro',
+    tag: 'Alimentacao',
+    description: '',
+    // exchangeRates: '', // => deixei para criar este estado lá na função do fetchExchangeRates
+  };
+
+  async componentDidMount() {
     // preciso do dispatch para chamar a função.
     const { dispatch } = this.props;
-    dispatch(fetchCurrency());
+    await dispatch(fetchCurrency());
   }
+
+  // O componente didUpdate precisa ter um if para não atualizar de forma infinita, e uso ele para deixar o valor padrão select das moedas como sendo o primeiro item da lista de array
+
+  componentDidUpdate() {
+    const { currencies } = this.props;
+    const { currency } = this.state;
+    if (currency === '') {
+      this.setState({ currency: currencies[0] });
+    }
+  }
+
+  handleChange = ({ target: { value, name } }) => {
+    // console.log(value, name);
+    this.setState({ [name]: value });
+  };
+
+  saveInfo = async () => {
+    // const { dispatch, expenses } = this.props;
+    // console.log(expenses);
+    // o await não funciona aqui porque o setState não é uma promise
+    // await this.setState({ id: expenses.length }); // o length vai dar problema na hora de desenvolver o requisito 8
+    // await dispatch(addExpenseWallet(this.state));
+    // this.setState({ value: '', description: '' });
+
+    const { dispatch } = this.props;
+    await dispatch(fetchExchangeRates(this.state));
+    this.setState((previousState) => ({
+      value: '',
+      description: '',
+      id: previousState.id + 1, // isto aqui vai ser o contador do id, funciona melhor do que é length e é mais prático
+    }));
+  };
 
   render() {
     const { currencies } = this.props;
-    console.log(currencies);
+    // console.log(currencies);
+    const { value, description } = this.state;
 
     return (
       <div>
         <form className="formulario">
-          <label htmlFor="valorDespesa" className="labelInputSelect">
+          <label htmlFor="value" className="labelInputSelect">
             Valor:
             <input
-              name="valorDespesa"
-              type="number"
+              name="value"
+              type="text"
+              value={ value }
               data-testid="value-input"
+              onChange={ this.handleChange }
             />
           </label>
 
-          <label htmlFor="selectCurrency" className="labelInputSelect">
+          <label htmlFor="currency" className="labelInputSelect">
             Moeda
-            <select name="selectCurrency" data-testid="currency-input">
-              {currencies.map((currency) => (
-                <option key={ currency } value={ currency }>{ currency }</option>
+            <select
+              name="currency"
+              data-testid="currency-input"
+              onChange={ this.handleChange }
+            >
+              {currencies.map((moeda) => (
+                <option key={ moeda } value={ moeda }>{ moeda }</option>
               ))}
             </select>
           </label>
 
-          <label htmlFor="selectMetodo" className="labelInputSelect">
+          <label htmlFor="method" className="labelInputSelect">
             Método de pagamento
-            <select name="selectMetodo" data-testid="method-input">
-              <option value="dinheiro">Dinheiro</option>
-              <option value="credito">Cartão de crédito</option>
-              <option value="debito">Cartão de débito</option>
+            <select
+              name="method"
+              data-testid="method-input"
+              onChange={ this.handleChange }
+            >
+              <option value="Dinheiro">Dinheiro</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Cartão de débito">Cartão de débito</option>
             </select>
           </label>
 
-          <label htmlFor="selectTag" className="labelInputSelect">
+          <label htmlFor="tag" className="labelInputSelect">
             Categoria
-            <select name="selectTag" data-testid="tag-input">
-              <option value="alimentacao">Alimentação</option>
-              <option value="lazer">Lazer</option>
-              <option value="trabalho">Trabalho</option>
-              <option value="transporte">Transporte</option>
-              <option value="saude">Saúde</option>
+            <select
+              name="tag"
+              data-testid="tag-input"
+              onChange={ this.handleChange }
+            >
+              <option value="Alimentação">Alimentação</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Saúde">Saúde</option>
             </select>
           </label>
 
-          <label htmlFor="descricaoDespesa" className="labelInputSelect">
+          <label htmlFor="description" className="labelInputSelect">
             Descrição:
             <input
-              name="descricaoDespesa"
+              name="description"
               type="text"
+              value={ description }
               data-testid="description-input"
+              onChange={ this.handleChange }
             />
           </label>
+          <button
+            type="button"
+            onClick={ this.saveInfo }
+          >
+            Adicionar despesa
+          </button>
         </form>
       </div>
     );
   }
 }
 
-const mapStateToProps = (globalState) => ({ currencies: globalState.wallet.currencies });
+// const mapStateToProps = (globalState) => ({
+//   currencies: globalState.wallet.currencies,
+//   expenses: globalState.wallet.expenses,
+// });
+
+const mapStateToProps = ({ wallet: { currencies, expenses } }) => ({
+  currencies,
+  expenses,
+});
+
+// isto aqui era se eu estivesse usando o length, porque precisaria do expense
+// WalletForm.propTypes = {
+//   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+//   expenses: PropTypes.arrayOf(PropTypes.shape({
+//     id: PropTypes.number,
+//     value: PropTypes.string,
+//     currency: PropTypes.string,
+//     method: PropTypes.string,
+//     tag: PropTypes.string,
+//     description: PropTypes.string,
+//     exchangeRates: PropTypes.string,
+//   })).isRequired,
+//   dispatch: PropTypes.func.isRequired,
+// };
 
 WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
