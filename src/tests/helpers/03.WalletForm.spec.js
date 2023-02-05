@@ -28,7 +28,7 @@ describe('Testa o componente "WalletForm"', () => {
   it('Verifica se os dados do formulário são salvos no componente global', async () => {
     // Não funcionou quando desenvolvi assim, sempre aparecia a mensagem "TestingLibraryElementError: Value "USD" not found in options"
     // const moedaEUR = await screen.findByRole('option', { name: 'EUR' });
-    // userEvent.selectOptions(moedaUSD, ['USD']);
+    // userEvent.selectOptions(moedaEUR, ['EUR']);
 
     const { store } = renderWithRouterAndRedux(<Wallet />);
 
@@ -37,7 +37,7 @@ describe('Testa o componente "WalletForm"', () => {
     const botaoAdicionar = screen.getByRole('button', { name: 'Adicionar despesa' });
 
     userEvent.type(valor, '90');
-    await waitFor(() => userEvent.selectOptions(moedas, ['EUR'])); // precisa do waitFor para esperar o carregamento do Fetch no select.E precisei usar o select como um todo e não a option
+    await waitFor(() => userEvent.selectOptions(moedas, ['EUR'])); // precisa do waitFor para esperar o carregamento do Fetch no select. E precisei usar o select como um todo e não a option
     userEvent.click(botaoAdicionar);
 
     const resultadoDepoisDoFetch = {
