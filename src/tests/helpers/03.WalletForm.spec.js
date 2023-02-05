@@ -25,6 +25,20 @@ describe('Testa o componente "WalletForm"', () => {
     expect(store.getState().wallet).toEqual(resultadoInicial);
   });
 
+  it('Verifica se o Fetch para listar as moedas é chamado logo depois que o componente carrega', async () => {
+    const { store } = renderWithRouterAndRedux(<Wallet />);
+
+    const resultadoComFetchCurrency = {
+      currencies: ['USD', 'CAD', 'GBP', 'ARS', 'BTC', 'LTC', 'EUR', 'JPY', 'CHF', 'AUD', 'CNY', 'ILS', 'ETH', 'XRP', 'DOGE'],
+      expenses: [],
+      editor: false,
+      idToEdit: 0,
+    };
+
+    await waitFor(() => expect(store.getState().wallet)
+      .toEqual(resultadoComFetchCurrency));
+  });
+
   it('Verifica se os dados do formulário são salvos no componente global', async () => {
     // Não funcionou quando desenvolvi assim, sempre aparecia a mensagem "TestingLibraryElementError: Value "USD" not found in options"
     // const moedaEUR = await screen.findByRole('option', { name: 'EUR' });
@@ -41,7 +55,6 @@ describe('Testa o componente "WalletForm"', () => {
     userEvent.click(botaoAdicionar);
 
     const resultadoDepoisDoFetch = {
-      currencies: ['USD', 'CAD', 'GBP', 'ARS', 'BTC', 'LTC', 'EUR', 'JPY', 'CHF', 'AUD', 'CNY', 'ILS', 'ETH', 'XRP', 'DOGE'],
       expenses: [
         {
           id: 0,
