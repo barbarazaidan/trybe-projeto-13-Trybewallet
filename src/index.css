@@ -20,3 +20,7 @@ code {
   display: flex;
   margin: 5px;
 }
+
+.walletTableDiv {
+  margin-top: 40px;
+}
