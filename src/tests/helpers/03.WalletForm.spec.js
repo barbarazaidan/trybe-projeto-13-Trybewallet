@@ -65,8 +65,6 @@ describe('Testa o componente "WalletForm"', () => {
           description: '',
         },
       ],
-      editor: false,
-      idToEdit: 0,
     };
 
     // também precisa do waitFor por conta da chamada do Fetch dentro da função fetchExchangeRate que é disparada ao clicar no botão
