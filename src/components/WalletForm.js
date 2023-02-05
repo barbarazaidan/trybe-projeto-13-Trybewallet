@@ -31,9 +31,9 @@ class WalletForm extends Component {
     }
   }
 
-  handleChange = ({ target: { value, name } }) => {
+  handleChange = ({ target: { value, id } }) => {
     // console.log(value, name);
-    this.setState({ [name]: value });
+    this.setState({ [id]: value });
   };
 
   saveInfo = async () => {
@@ -64,7 +64,8 @@ class WalletForm extends Component {
           <label htmlFor="value" className="labelInputSelect">
             Valor:
             <input
-              name="value"
+              // name="value" // o correto é fazer a associação da label com o input usando id, pelo menos o teste do RTL reclama quando uso o name
+              id="value"
               type="text"
               value={ value }
               data-testid="value-input"
@@ -73,22 +74,22 @@ class WalletForm extends Component {
           </label>
 
           <label htmlFor="currency" className="labelInputSelect">
-            Moeda
+            Moeda:
             <select
-              name="currency"
+              id="currency"
               data-testid="currency-input"
               onChange={ this.handleChange }
             >
               {currencies.map((moeda) => (
-                <option key={ moeda } value={ moeda }>{ moeda }</option>
+                <option name="moedas" key={ moeda } value={ moeda }>{ moeda }</option>
               ))}
             </select>
           </label>
 
           <label htmlFor="method" className="labelInputSelect">
-            Método de pagamento
+            Método de pagamento:
             <select
-              name="method"
+              id="method"
               data-testid="method-input"
               onChange={ this.handleChange }
             >
@@ -101,7 +102,7 @@ class WalletForm extends Component {
           <label htmlFor="tag" className="labelInputSelect">
             Categoria
             <select
-              name="tag"
+              id="tag"
               data-testid="tag-input"
               onChange={ this.handleChange }
             >
@@ -116,7 +117,7 @@ class WalletForm extends Component {
           <label htmlFor="description" className="labelInputSelect">
             Descrição:
             <input
-              name="description"
+              id="description"
               type="text"
               value={ description }
               data-testid="description-input"
