@@ -20,10 +20,15 @@ class Table extends Component {
     }
   }
 
+  calValorConvertido = (valor, moeda) => {
+    const valorConvertido = (Number(valor) * Number(moeda.ask)).toFixed(2);
+    return valorConvertido;
+  };
+
   geraLinhaTabela = () => {
     const { expenses } = this.props;
     // console.log(expenses);
-    const linha = expenses.map(({
+    const linhas = expenses.map(({
       id, description, tag, method, value, currency, exchangeRates,
     }) => {
       const moedaCorreta = exchangeRates[currency];
@@ -32,20 +37,15 @@ class Table extends Component {
           <td>{description}</td>
           <td>{tag}</td>
           <td>{method}</td>
-          <td>{Number(value)}</td>
+          <td>{Number(value).toFixed(2)}</td>
           <td>{moedaCorreta.name}</td>
-          <td>{Number(moedaCorreta.ask)}</td>
+          <td>{Number(moedaCorreta.ask).toFixed(2)}</td>
           <td>{this.calValorConvertido(value, moedaCorreta)}</td>
           <td>Real</td>
         </tr>
       );
     });
-    return linha;
-  };
-
-  calValorConvertido = (valor, moeda) => {
-    const valorConvertido = (Number(valor) * Number(moeda.ask)).toFixed(2);
-    return valorConvertido;
+    return linhas;
   };
 
   render() {
