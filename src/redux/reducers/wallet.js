@@ -1,9 +1,9 @@
 // import {
 //   ADD_EDITOR_WALLET, ADD_ISTOEDIT_WALLET,
 // } from '../actions';
-
 import { ADD_CURRENCIES_WALLET } from '../actions/addCurrencies';
 import { ADD_EXPENSE_WALLET } from '../actions/addExpenses';
+import { DELETE_EXPENSE_WALLET } from '../actions/deleteExpense';
 
 const INNICIAL_STATE = {
   currencies: [], // array de string
@@ -25,6 +25,11 @@ const walletReducer = (state = INNICIAL_STATE, action) => {
       ...state,
       expenses: [...state.expenses, action.payload],
       // faço o spred no array antigo da chave expenses e acrescento o novo objeto vindo da action
+    };
+  case DELETE_EXPENSE_WALLET:
+    return {
+      ...state,
+      expenses: state.expenses.filter((expense) => expense.id !== action.payload),
     };
   default:
     return state;

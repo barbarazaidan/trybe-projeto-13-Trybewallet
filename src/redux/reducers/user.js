@@ -1,4 +1,4 @@
-import { ADD_EMAIL_DADOS } from '../actions';
+import { ADD_EMAIL_DADOS } from '../actions/addEmail';
 
 const INNICIAL_STATE = {
   email: '', // string que armazena o email da pessoa usuária

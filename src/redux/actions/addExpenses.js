@@ -1,8 +1,8 @@
 export const ADD_EXPENSE_WALLET = 'ADD_EXPENSE_WALLET';
 
-export const addExpenseWallet = (expenses) => ({
+export const addExpenseWallet = (expense) => ({
   type: ADD_EXPENSE_WALLET,
-  payload: expenses, // matenho o expenses como o objeto que ele é
+  payload: expense, // matenho o expenses como o objeto que ele é
 });
 
 export function fetchExchangeRates(estadoComponente) {
