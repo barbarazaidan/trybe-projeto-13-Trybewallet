@@ -4,12 +4,13 @@
 import { ADD_CURRENCIES_WALLET } from '../actions/addCurrencies';
 import { ADD_EXPENSE_WALLET } from '../actions/addExpenses';
 import { DELETE_EXPENSE_WALLET } from '../actions/deleteExpense';
+import { EDIT_EXPENSE_WALLET, NEW_EXPENSES_WALLET } from '../actions/editExpense';
 
 const INNICIAL_STATE = {
-  currencies: [], // array de string
-  expenses: [], // array de objetos, com cada objeto tendo as chaves id, value, currency, method, tag, description e exchangeRates
-  editor: false, // valor booleano que indica de uma despesa está sendo editada
-  idToEdit: 0, // valor numérico que armazena o id da despesa que esta sendo editada
+  currencies: [],
+  expenses: [],
+  editor: false, // valor booleano que indica se uma despesa está sendo editada
+  idToEdit: 0,
 };
 
 const walletReducer = (state = INNICIAL_STATE, action) => {
@@ -30,6 +31,18 @@ const walletReducer = (state = INNICIAL_STATE, action) => {
     return {
       ...state,
       expenses: state.expenses.filter((expense) => expense.id !== action.payload),
+    };
+  case EDIT_EXPENSE_WALLET:
+    return {
+      ...state,
+      editor: true,
+      idToEdit: action.payload,
+    };
+  case NEW_EXPENSES_WALLET:
+    return {
+      ...state,
+      editor: false,
+      expenses: action.payload,
     };
   default:
     return state;

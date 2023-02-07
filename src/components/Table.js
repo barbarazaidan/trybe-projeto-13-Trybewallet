@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { deleteExpenseWallet } from '../redux/actions/deleteExpense';
+import { editExpenseWallet } from '../redux/actions/editExpense';
 
 class Table extends Component {
   state = {
@@ -33,7 +34,9 @@ class Table extends Component {
   };
 
   editExpense = (id) => {
-    console.log(id);
+    // console.log(id);
+    const { dispatch } = this.props;
+    dispatch(editExpenseWallet(id));
   };
 
   geraLinhaTabela = () => {

@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchExchangeRates } from '../redux/actions/addExpenses';
 import { fetchCurrency } from '../redux/actions/addCurrencies';
+import { newExpensesWallet } from '../redux/actions/editExpense';
 
 class WalletForm extends Component {
   state = {
     id: 0,
     value: '',
     currency: '',
-    method: 'Dinheiro',
-    tag: 'Alimentação',
+    method: '',
+    tag: '',
     description: '',
-    // exchangeRates: '', // => deixei para criar este estado lá na função do fetchExchangeRates
+    exchangeRates: '',
   };
 
   async componentDidMount() {
@@ -24,12 +25,43 @@ class WalletForm extends Component {
   // O componente didUpdate precisa ter um if para não atualizar de forma infinita, e uso ele para deixar o valor padrão select das moedas como sendo o primeiro item da lista de array
 
   componentDidUpdate() {
+    this.geraEstados();
+    this.editaADespesa();
+  }
+
+  geraEstados = () => {
     const { currencies } = this.props;
     const { currency } = this.state;
     if (currency === '') {
-      this.setState({ currency: currencies[0] });
+      this.setState({
+        currency: currencies[0],
+        // coloquei o method e a tag aqui, pois o lint reclamou quando setei no início do estado, já que tinha que repetir as strings também no saveInfo() e no saveInfoEdited()
+        method: 'Dinheiro',
+        tag: 'Alimentação',
+      });
     }
-  }
+  };
+
+  editaADespesa = () => {
+    const { editor, idToEdit, expenses } = this.props;
+    const { id } = this.state;
+    if (editor && id !== idToEdit) {
+      const despesaEmEdicao = expenses.find((expense) => expense.id === idToEdit);
+      // console.log(despesaEmEdicao);
+      const {
+        value, currency, method, tag, description, exchangeRates,
+      } = despesaEmEdicao;
+      this.setState({
+        id: despesaEmEdicao.id,
+        value,
+        currency,
+        method,
+        tag,
+        description,
+        exchangeRates,
+      });
+    }
+  };
 
   handleChange = ({ target: { value, id } }) => {
     // console.log(value, id);
@@ -45,18 +77,49 @@ class WalletForm extends Component {
     // this.setState({ value: '', description: '' });
 
     const { dispatch } = this.props;
+
     await dispatch(fetchExchangeRates(this.state));
     this.setState((previousState) => ({
       value: '',
+      currency: '',
+      method: '',
+      tag: '',
       description: '',
-      id: previousState.id + 1, // isto aqui vai ser o contador do id, funciona melhor do que é length e é mais prático
+      exchangeRates: '',
+      id: previousState.id + 1, // isto aqui vai ser o contador do id, funciona melhor do que é length (por conta do requisito de edição) e é mais prático
     }));
   };
 
+  saveInfoEdited = () => {
+    const { dispatch, expenses } = this.props;
+    const dispesaEditada = { ...this.state };
+    const NewExpenses = expenses.map((expense) => {
+      if (dispesaEditada.id === expense.id) {
+        return dispesaEditada;
+      } return expense;
+    });
+    console.log(NewExpenses);
+
+    dispatch(newExpensesWallet(NewExpenses));
+    this.setState((previousState) => {
+      console.log('previousState', previousState);
+      return {
+        id: expenses.length,
+        value: '',
+        currency: '',
+        method: '',
+        tag: '',
+        description: '',
+        exchangeRates: '',
+      };
+    });
+  };
+
   render() {
-    const { currencies } = this.props;
+    const { currencies, editor } = this.props;
     // console.log(currencies);
-    const { value, description } = this.state;
+    const { value, description, method, currency, tag } = this.state;
+    // const { value, description, exchangeRates } = this.state;
 
     return (
       <div>
@@ -78,6 +141,7 @@ class WalletForm extends Component {
             <select
               id="currency"
               data-testid="currency-input"
+              value={ currency }
               onChange={ this.handleChange }
             >
               {currencies.map((moeda) => (
@@ -91,6 +155,8 @@ class WalletForm extends Component {
             <select
               id="method"
               data-testid="method-input"
+              // com o value desta forma, ele muda o select na hora de editar as despesas
+              value={ method }
               onChange={ this.handleChange }
             >
               <option value="Dinheiro">Dinheiro</option>
@@ -104,6 +170,7 @@ class WalletForm extends Component {
             <select
               id="tag"
               data-testid="tag-input"
+              value={ tag }
               onChange={ this.handleChange }
             >
               <option value="Alimentação">Alimentação</option>
@@ -124,12 +191,21 @@ class WalletForm extends Component {
               onChange={ this.handleChange }
             />
           </label>
-          <button
-            type="button"
-            onClick={ this.saveInfo }
-          >
-            Adicionar despesa
-          </button>
+          { editor ? (
+            <button
+              type="button"
+              onClick={ this.saveInfoEdited }
+            >
+              Editar despesa
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={ this.saveInfo }
+            >
+              Adicionar despesa
+            </button>
+          )}
         </form>
       </div>
     );
@@ -141,28 +217,18 @@ class WalletForm extends Component {
 //   expenses: globalState.wallet.expenses,
 // });
 
-const mapStateToProps = ({ wallet: { currencies, expenses } }) => ({
+const mapStateToProps = ({ wallet: { currencies, expenses, editor, idToEdit } }) => ({
   currencies,
   expenses,
+  editor,
+  idToEdit,
 });
-
-// isto aqui era se eu estivesse usando o length, porque precisaria do expense
-// WalletForm.propTypes = {
-//   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
-//   expenses: PropTypes.arrayOf(PropTypes.shape({
-//     id: PropTypes.number,
-//     value: PropTypes.string,
-//     currency: PropTypes.string,
-//     method: PropTypes.string,
-//     tag: PropTypes.string,
-//     description: PropTypes.string,
-//     exchangeRates: PropTypes.string,
-//   })).isRequired,
-//   dispatch: PropTypes.func.isRequired,
-// };
 
 WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  editor: PropTypes.bool.isRequired,
+  idToEdit: PropTypes.number.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
