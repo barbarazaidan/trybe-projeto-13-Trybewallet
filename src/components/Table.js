@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deletExpenseWallet } from '../redux/actions/deleteExpense';
+import { deleteExpenseWallet } from '../redux/actions/deleteExpense';
 
 class Table extends Component {
   state = {
@@ -29,7 +29,7 @@ class Table extends Component {
   deleteExpense = (id) => {
     const { dispatch } = this.props;
     console.log(dispatch);
-    dispatch(deletExpenseWallet(id));
+    dispatch(deleteExpenseWallet(id));
   };
 
   editExpense = (id) => {
@@ -62,8 +62,6 @@ class Table extends Component {
             >
               Excluir
             </button>
-          </td>
-          <td>
             <button
               type="button"
               data-testid="edit-btn"
