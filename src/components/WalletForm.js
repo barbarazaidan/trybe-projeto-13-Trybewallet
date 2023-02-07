@@ -10,7 +10,7 @@ class WalletForm extends Component {
     value: '',
     currency: '',
     method: 'Dinheiro',
-    tag: 'Alimentacao',
+    tag: 'Alimentação',
     description: '',
     // exchangeRates: '', // => deixei para criar este estado lá na função do fetchExchangeRates
   };
@@ -32,7 +32,7 @@ class WalletForm extends Component {
   }
 
   handleChange = ({ target: { value, id } }) => {
-    // console.log(value, name);
+    // console.log(value, id);
     this.setState({ [id]: value });
   };
 

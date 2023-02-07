@@ -32,6 +32,10 @@ class Table extends Component {
     dispatch(deletExpenseWallet(id));
   };
 
+  editExpense = (id) => {
+    console.log(id);
+  };
+
   geraLinhaTabela = () => {
     const { expenses } = this.props;
     // console.log(expenses);
@@ -57,6 +61,16 @@ class Table extends Component {
               onClick={ () => this.deleteExpense(id) }
             >
               Excluir
+            </button>
+          </td>
+          <td>
+            <button
+              type="button"
+              data-testid="edit-btn"
+              id="btnEditar"
+              onClick={ () => this.editExpense(id) }
+            >
+              Editar despesa
             </button>
           </td>
         </tr>
