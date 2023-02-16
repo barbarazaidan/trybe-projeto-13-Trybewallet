@@ -7,10 +7,12 @@ import Wallet from '../../pages/Wallet';
 describe('Testa o componente "WalletForm"', () => {
   it('Verifica os dados do estado global assim que o componente carrega', () => {
     const initialState = {
-      currencies: [],
-      expenses: [],
-      editor: false,
-      idToEdit: 0,
+      wallet: {
+        currencies: [],
+        expenses: [],
+        editor: false,
+        idToEdit: 0,
+      },
     };
 
     const { store } = renderWithRouterAndRedux(<Wallet />, { initialState });
@@ -61,7 +63,7 @@ describe('Testa o componente "WalletForm"', () => {
           value: '90',
           currency: 'EUR',
           method: 'Dinheiro',
-          tag: 'Alimentacao',
+          tag: 'Alimentação',
           description: '',
         },
       ],
@@ -70,5 +72,23 @@ describe('Testa o componente "WalletForm"', () => {
     // também precisa do waitFor por conta da chamada do Fetch dentro da função fetchExchangeRate que é disparada ao clicar no botão
     await waitFor(() => expect(store.getState().wallet)
       .toMatchObject(resultadoDepoisDoFetch));
+  });
+
+  it('Verifica se os dados do formulário são limpos depois de adicionar a despesa', async () => {
+    const { debug } = renderWithRouterAndRedux(<Wallet />);
+
+    const valor = screen.getByLabelText('Valor:');
+    const moedas = screen.getByTestId('currency-input');
+    const botaoAdicionar = screen.getByRole('button', { name: 'Adicionar despesa' });
+
+    userEvent.type(valor, '90');
+    await waitFor(() => userEvent.selectOptions(moedas, ['EUR']));
+    userEvent.click(botaoAdicionar);
+
+    await waitFor(() => {
+      expect(valor.value).toBe('');
+      expect(moedas.value).toBe('USD');
+    });
+    debug();
   });
 });

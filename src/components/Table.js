@@ -23,13 +23,16 @@ class Table extends Component {
   }
 
   calValorConvertido = (valor, moeda) => {
-    const valorConvertido = (Number(valor) * Number(moeda.ask)).toFixed(2);
-    return valorConvertido;
+    // console.log(valor);
+    // console.log(Number(moeda.ask).toFixed(2));
+    const valorConvertido = (Number(valor) * Number(moeda.ask));
+    // console.log(valorConvertido);
+    return valorConvertido.toFixed(2);
   };
 
   deleteExpense = (id) => {
     const { dispatch } = this.props;
-    console.log(dispatch);
+    // console.log(dispatch);
     dispatch(deleteExpenseWallet(id));
   };
 

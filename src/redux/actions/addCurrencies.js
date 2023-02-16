@@ -11,6 +11,9 @@ export function fetchCurrency() {
   return (dispatch) => {
     fetch('https://economia.awesomeapi.com.br/json/all') // essa primeira parte chama o fetch
       .then((response) => response.json())
-      .then((data) => dispatch(addCurrenciesWallet(data))); // depois que eu tenho o data, eu disparo a action que é responsável por atualizar o estado currencies e aí chega o trabalho do reducer
+      .then((data) => {
+        console.log(data);
+        dispatch(addCurrenciesWallet(data));
+      }); // depois que eu tenho o data, eu disparo a action que é responsável por atualizar o estado currencies e aí chega o trabalho do reducer
   };
 }

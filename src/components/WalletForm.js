@@ -44,10 +44,13 @@ class WalletForm extends Component {
 
   editaADespesa = () => {
     const { editor, idToEdit, expenses } = this.props;
+    // console.log(editor);
     const { id } = this.state;
+    // console.log(id);
     if (editor && id !== idToEdit) {
       const despesaEmEdicao = expenses.find((expense) => expense.id === idToEdit);
       // console.log(despesaEmEdicao);
+      // console.log('estou editando');
       const {
         value, currency, method, tag, description, exchangeRates,
       } = despesaEmEdicao;
@@ -92,26 +95,25 @@ class WalletForm extends Component {
 
   saveInfoEdited = () => {
     const { dispatch, expenses } = this.props;
+    // console.log(expenses);
     const dispesaEditada = { ...this.state };
+    // console.log(dispesaEditada);
     const NewExpenses = expenses.map((expense) => {
       if (dispesaEditada.id === expense.id) {
         return dispesaEditada;
       } return expense;
     });
-    console.log(NewExpenses);
+    // console.log(NewExpenses);
 
     dispatch(newExpensesWallet(NewExpenses));
-    this.setState((previousState) => {
-      console.log('previousState', previousState);
-      return {
-        id: expenses.length,
-        value: '',
-        currency: '',
-        method: '',
-        tag: '',
-        description: '',
-        exchangeRates: '',
-      };
+    this.setState({
+      id: expenses.length,
+      value: '',
+      currency: '',
+      method: '',
+      tag: '',
+      description: '',
+      exchangeRates: '',
     });
   };
 
@@ -194,6 +196,7 @@ class WalletForm extends Component {
           { editor ? (
             <button
               type="button"
+              data-testid="btn-edit-form"
               onClick={ this.saveInfoEdited }
             >
               Editar despesa

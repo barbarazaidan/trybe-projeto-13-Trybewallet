@@ -1,10 +1,9 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './renderWith';
 import Header from '../../components/Header';
-// import Wallet from '../../pages/Wallet';
-// import mockData from './mockData';
+import Wallet from '../../pages/Wallet';
 // import { fetchExchangeRates } from '../../redux/actions/addExpenses';
 
 describe('Testa o componente Header', () => {
@@ -28,34 +27,26 @@ describe('Testa o componente Header', () => {
     expect(moedaRenderizada).toHaveTextContent('BRL');
   });
 
-  // it('Verifica se a informação das despesas totais é renderizada na tela', async () => {
-  //   // fetchExchangeRates
+  it('Verifica se a informação das despesas totais é renderizada na tela', async () => {
+    const { debug } = renderWithRouterAndRedux(<Wallet />);
 
-  //   renderWithRouterAndRedux(<Wallet />);
-  //   jest.mock('../../redux/actions/addExpenses');
-  //   fetchExchangeRates.mockReturnValue({
-  //     id: 0,
-  //     value: '80',
-  //     currency: 'EUR',
-  //     method: 'Dinheiro',
-  //     tag: 'Alimentacao',
-  //     description: '',
-  //     exchangeRates: mockData,
-  //   });
+    const valor = screen.getByLabelText('Valor:');
+    const moedas = screen.getByTestId('currency-input');
+    const botaoAdicionar = screen.getByRole('button', { name: 'Adicionar despesa' });
+    const despesasTotaisRenderizada = screen.getByTestId('total-field');
 
-  //   const valor = screen.getByLabelText('Valor:');
-  //   const moedas = screen.getByTestId('currency-input');
-  //   const botaoAdicionar = screen.getByRole('button', { name: 'Adicionar despesa' });
-  //   const despesasTotaisRenderizada = screen.getByTestId('total-field');
+    expect(despesasTotaisRenderizada).toHaveTextContent('0');
 
-  //   expect(despesasTotaisRenderizada).toHaveTextContent('0');
+    userEvent.type(valor, '80');
+    await waitFor(() => userEvent.selectOptions(moedas, ['EUR']));
+    userEvent.click(botaoAdicionar);
 
-  //   userEvent.type(valor, '80');
-  //   await waitFor(() => userEvent.selectOptions(moedas, ['EUR']));
-  //   userEvent.click(botaoAdicionar);
+    await screen.findByText(/80/);
+    const celulas = screen.getAllByRole('cell');
+    const celulaCambio = celulas[5].innerHTML;
+    const valorConvertido = (celulaCambio * 80).toFixed(2);
 
-  //   // expect(despesasTotaisRenderizada).toHaveTextContent('463.74');
-  //   await waitFor(() => expect(despesasTotaisRenderizada)
-  //     .toHaveTextContent('444,86'));
-  // });
+    expect(despesasTotaisRenderizada).toHaveTextContent(valorConvertido);
+    debug();
+  });
 });
