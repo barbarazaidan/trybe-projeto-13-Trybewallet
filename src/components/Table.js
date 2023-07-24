@@ -25,7 +25,7 @@ class Table extends Component {
   calValorConvertido = (valor, moeda) => {
     // console.log(valor);
     // console.log(Number(moeda.ask).toFixed(2));
-    const valorConvertido = (Number(valor) * Number(moeda.ask));
+    const valorConvertido = (Number(valor) * Number(moeda.ask).toFixed(2));
     // console.log(valorConvertido);
     return valorConvertido.toFixed(2);
   };

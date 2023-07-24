@@ -146,10 +146,10 @@ describe('Testa o componente "Table"', () => {
     const btnEditarDespesa = screen.queryByTestId('btn-edit-form');
 
     userEvent.clear(inputDescricao);
-    userEvent.type(inputDescricao, '90 gastos euros com alimentação');
+    userEvent.type(inputDescricao, '90 euros gastos com alimentação');
     userEvent.click(btnEditarDespesa);
 
-    const descricaoLinhaModicada = screen.queryByText('90 euros gastos com alimentação');
+    const descricaoLinhaModicada = screen.getByText('90 euros gastos com alimentação');
     debug();
 
     expect(descricaoLinhaModicada).toBeInTheDocument();

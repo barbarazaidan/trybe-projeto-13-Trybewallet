@@ -43,7 +43,7 @@ class Header extends Component {
   fazCalculoDoTotal = (exchangeRatesNValue) => {
     const totalValue = exchangeRatesNValue.reduce((acumulador, valorCorrente) => {
       const { value, exchangeRates } = valorCorrente;
-      const moedaConvertida = Number(value) * Number(exchangeRates.ask);
+      const moedaConvertida = Number(value) * Number(exchangeRates.ask).toFixed(2);
       console.log(exchangeRates.ask);
       return moedaConvertida + acumulador;
     }, 0);
