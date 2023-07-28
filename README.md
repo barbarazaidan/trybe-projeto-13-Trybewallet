@@ -22,6 +22,8 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 **2. Crie um header para a página de carteira contendo as seguintes características**
 
 <details><summary>Detalhes</summary>
@@ -39,6 +41,8 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 
 </p>
 </details>
+
+---
 
 **3. Desenvolva um formulário para adicionar uma despesa contendo as seguintes características:**
 
@@ -60,6 +64,8 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 **4.  Salve todas as informações do formulário no estado global**
 
 <details><summary>Detalhes</summary>
@@ -72,7 +78,11 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 **5. Desenvolva testes para atingir 60% de cobertura total da aplicação**
+
+---
 
 **6. Desenvolva uma tabela com os gastos contendo as seguintes características:**
 
@@ -86,6 +96,8 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 **7. Implemente a lógica para que a tabela seja alimentada pelo estado da aplicação**
 
 <details><summary>Detalhes</summary>
@@ -95,6 +107,8 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 
 </p>
 </details>
+
+---
 
 **8. Crie um botão para deletar uma despesa da tabela contendo as seguintes características:**
 
@@ -112,6 +126,8 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 **9. Crie um botão para editar uma despesa da tabela contendo as seguintes características:**
 
 <details><summary>Detalhes</summary>
@@ -121,11 +137,14 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 
 > Ao ser clicado, o botão habilita um formulário para editar a linha da tabela. Ao clicar em "Editar despesa" ela é atualizada, alterando o estado global.
 
-
 </p>
 </details>
 
+---
+
 **10. Desenvolva testes para atingir 90% de cobertura total da aplicação**
+
+---
 
 ## Sobre o curso da Trybe
 O programa total de estudo conta com mais de 1.500 horas de aulas presenciais e online,divididas ao longo de 12 meses. O conteúdo aborda introdução ao desenvolvimento de software, front-end, back-end, ciência da computação, engenharia de software, metodologias ágeis e habilidades comportamentais.
